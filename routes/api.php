@@ -20,9 +20,17 @@ use App\Http\Controllers\AuthController;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware(['auth:api', 'role:admin|docente'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('/', function () {
-        return 3;
+});
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::get('/admin', function () {
+        return "admin";
+    });
+});
+
+Route::middleware(['auth:api', 'role:docente'])->group(function () {
+    Route::get('/docente', function () {
+        return "docente";
     });
 });
